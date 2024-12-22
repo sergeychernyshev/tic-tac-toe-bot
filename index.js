@@ -1,7 +1,7 @@
 import tmi from "tmi.js";
 
 const client = new tmi.Client({
-  channels: ["ChernyGoodsCo"],
+  channels: ["SergeyChernyshev"],
 });
 
 client.connect();

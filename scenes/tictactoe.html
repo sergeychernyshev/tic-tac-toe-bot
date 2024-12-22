@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample Scene</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        color: white;
+      }
+
+      #tictactoe-board {
+        display: grid;
+        gap: 0.5em;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        width: 100vw;
+        height: 100vh;
+        background-color: #333;
+      }
+
+      #tictactoe-board div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 8em;
+        background-color: #828282;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="tictactoe-board">
+      <!-- row 1 -->
+      <div id="cell00"></div>
+      <div id="cell10"></div>
+      <div id="cell20"></div>
+
+      <!-- row 2 -->
+      <div id="cell01"></div>
+      <div id="cell11"></div>
+      <div id="cell21"></div>
+
+      <!-- row 3 -->
+      <div id="cell02"></div>
+      <div id="cell12"></div>
+      <div id="cell22"></div>
+    </div>
+
+    <script src="/_resources/pouchdb/pouchdb.min.js"></script>
+    <script src="/_resources/db.js"></script>
+    <script>
+      db.changes({
+        since: "now",
+        live: true,
+      }).on("change", updateUI);
+
+      function updateUI() {
+        db.get("tic-tac-toe")
+          .then(function (result) {
+            for (let col = 0; col < 3; col++) {
+              for (let row = 0; row < 3; row++) {
+                document.getElementById(`cell${col}${row}`).textContent =
+                  result.board[col][row];
+              }
+            }
+          })
+          .catch(function (err) {
+            console.log("error loading the game data", err);
+          });
+      }
+
+      updateUI();
+    </script>
+  </body>
+</html>
